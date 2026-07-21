@@ -51,15 +51,6 @@ export function getPayloadFromRequestStream(
 ): Promise<Uint8Array> {
   // We need to load the payload from the request (normal case of Node.js server)
   return new Promise((resolve, reject) => {
-    const data: Uint8Array[] = [];
-
-    request.on("error", (error: Error) =>
-      reject(new AggregateError([error], error.message)),
-    );
-    request.on("data", data.push.bind(data));
-    request.on("end", () => {
-      const result = concatUint8Array(data);
-      queueMicrotask(() => resolve(result));
-    });
+      throw new Error("STUB");
   });
 }

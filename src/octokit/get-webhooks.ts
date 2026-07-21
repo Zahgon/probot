@@ -14,11 +14,5 @@ type GetWebhooksOptions = {
 };
 
 export function getWebhooks(options: GetWebhooksOptions): ProbotWebhooks {
-  const webhooks = new Webhooks({
-    log: options.log,
-    secret: options.webhookSecret,
-    transform: (event) => webhookTransform(options, event),
-  });
-  webhooks.onError(getErrorHandler(options.log));
-  return webhooks;
+    throw new Error("STUB");
 }

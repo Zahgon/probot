@@ -7,7 +7,9 @@ import type {
 } from "./types.js";
 import { createProbot } from "./create-probot.js";
 
-const noop = () => {};
+const noop = () => {
+    throw new Error("STUB");
+};
 
 /**
  * Create a Node/Express middleware.
@@ -50,7 +52,7 @@ export async function createNodeMiddleware(
   await probot.load(appFn, {
     cwd: process.cwd(),
     addHandler: (handler) => {
-      handlers.push(handler);
+        throw new Error("STUB");
     },
   });
 
@@ -61,21 +63,7 @@ export async function createNodeMiddleware(
   );
 
   const mainHandler: Handler = async (req, res, next = noop) => {
-    try {
-      for (const handler of handlers) {
-        const result = await handler(req, res);
-        if (result) {
-          return true;
-        }
-      }
-    } catch (e) {
-      probot.log.error(e);
-      res.writeHead(500).end();
-      return true;
-    }
-
-    next();
-    return false;
+      throw new Error("STUB");
   };
 
   return mainHandler;

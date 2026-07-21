@@ -39,41 +39,5 @@ export function createProbot({
   defaults = {},
   env = process.env,
 }: CreateProbotOptions = {}): Probot {
-  let privateKey;
-
-  try {
-    privateKey = getPrivateKey({ env });
-  } catch {}
-
-  const envWithDefaults = { ...DEFAULTS, ...env };
-
-  const envOptions: Options = {
-    logLevel: envWithDefaults.LOG_LEVEL as LogLevel,
-    appId: Number(envWithDefaults.APP_ID),
-    privateKey: (privateKey && privateKey.toString()) || undefined,
-    secret: envWithDefaults.WEBHOOK_SECRET,
-    redisConfig: envWithDefaults.REDIS_URL,
-    webhookPath: envWithDefaults.WEBHOOK_PATH,
-    baseUrl: envWithDefaults.GHE_HOST
-      ? `${envWithDefaults.GHE_PROTOCOL || "https"}://${
-          envWithDefaults.GHE_HOST
-        }/api/v3`
-      : "https://api.github.com",
-  };
-
-  const probotOptions = {
-    ...defaults,
-    ...envOptions,
-    ...overrides,
-  };
-
-  return new Probot({
-    log: probotOptions.log,
-    logLevel: probotOptions.logLevel,
-    logFormat: envWithDefaults.LOG_FORMAT as PinoOptions["logFormat"],
-    logLevelInString: envWithDefaults.LOG_LEVEL_IN_STRING === "true",
-    logMessageKey: envWithDefaults.LOG_MESSAGE_KEY,
-    sentryDsn: envWithDefaults.SENTRY_DSN,
-    ...probotOptions,
-  });
+    throw new Error("STUB");
 }

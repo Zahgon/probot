@@ -59,82 +59,11 @@ export class Server {
   #state: State;
 
   constructor(options: ServerOptions = {} as ServerOptions) {
-    this.#state = {
-      initializeRan: false,
-      initializationPromise: createDeferredPromise<void>(),
-      probot: null,
-      log: options.log,
-      httpServer: new HttpServer(),
-      cwd: options.cwd || process.cwd(),
-      port: options.port || 3000,
-      host: options.host || "localhost",
-      webhookPath: options.webhookPath || defaultWebhookPath,
-      webhookProxy: options.webhookProxy,
-      eventSource: undefined,
-      request: options.request,
-      ProbotBase: options.Probot,
-      addedHandlers: [],
-      handlers: [],
-      enablePing: options.enablePing ?? true,
-      enableNotFound: options.enableNotFound ?? true,
-      enableStaticFiles: options.enableStaticFiles ?? true,
-    };
-
-    this.#state.httpServer.on("request", async (req, res) => {
-      this.#state.httpLogger!(req, res);
-
-      try {
-        for (const handler of this.#state.handlers) {
-          if (await handler(req, res)) {
-            return true;
-          }
-        }
-      } catch (e) {
-        this.#state.log!.error(e);
-        res.writeHead(500).end();
-        return true;
-      }
-
-      return false;
-    });
+      throw new Error("STUB");
   }
 
   async #initialize(): Promise<void> {
-    if (this.#state.initializeRan === true) {
-      return this.#state.initializationPromise.promise;
-    }
-
-    this.#state.initializeRan = true;
-
-    try {
-      this.#state.log = this.#state.log || (await getLog());
-      this.#state.log.child({ name: "server" });
-
-      this.#state.probot = new this.#state.ProbotBase({
-        request: this.#state.request,
-        log: this.#state.log,
-        server: this,
-        webhookPath: this.#state.webhookPath,
-      });
-
-      await this.#state.probot.ready();
-
-      this.#state.httpLogger = httpLogger(
-        this.#state.log,
-        this.#state.loggingOptions,
-      );
-
-      this.#state.initializationPromise.resolve();
-    } catch (error) {
-      this.#state.initializationPromise.reject(error);
-      if (this.#state.log) {
-        this.#state.log.error({ err: error }, "Failed to initialize Server");
-      } else {
-        console.error("Failed to initialize Server", error);
-      }
-      throw error;
-    }
-    return this.#state.initializationPromise.promise;
+      throw new Error("STUB");
   }
 
   public addHandler(handler: Handler) {
@@ -147,7 +76,7 @@ export class Server {
     const handler = await appFn(this.#state.probot!, {
       cwd: this.#state.cwd,
       addHandler: (handler: Handler) => {
-        this.addHandler(handler as unknown as Handler);
+          throw new Error("STUB");
       },
     });
 
@@ -160,7 +89,7 @@ export class Server {
     await appFn(this.#state.probot!, {
       cwd: this.#state.cwd,
       addHandler: (handler: Handler) => {
-        this.addHandler(handler as unknown as Handler);
+          throw new Error("STUB");
       },
     });
   }
@@ -195,33 +124,7 @@ export class Server {
     const printableHost = getPrintableHost(this.#state.host);
 
     this.#state.httpServer = await new Promise((resolve, reject) => {
-      const server = this.#state.httpServer.listen(
-        { port: this.#state.port, host: this.#state.host },
-        () => {
-          const { port, address, family } = server.address() as AddressInfo;
-
-          this.#state.port = port;
-          this.#state.host = address;
-
-          if (family === "IPv6") {
-            this.#state.host = `[${address}]`;
-          }
-
-          this.#state.log!.info(`Listening on http://${printableHost}:${port}`);
-          resolve(server);
-        },
-      );
-
-      server.on("error", (error: NodeJS.ErrnoException) => {
-        if (error.code === "EADDRINUSE") {
-          error = Object.assign(error, {
-            message: `Port ${this.#state.port} is already in use. You can define the PORT environment variable to use a different port.`,
-          });
-        }
-
-        this.#state.log!.error(error);
-        reject(error);
-      });
+        throw new Error("STUB");
     });
 
     if (this.#state.webhookProxy) {
@@ -247,25 +150,23 @@ export class Server {
     }
     const server = this.#state.httpServer;
     return new Promise((resolve, reject) =>
-      server.close((err) => {
-        err ? reject(err) : resolve();
-      }),
+      { throw new Error("STUB"); },
     );
   }
 
   get port(): number {
-    return this.#state.port;
+      throw new Error("STUB");
   }
 
   get host(): string {
-    return this.#state.host;
+      throw new Error("STUB");
   }
 
   static get version(): string {
-    return VERSION;
+      throw new Error("STUB");
   }
 
   get version(): string {
-    return VERSION;
+      throw new Error("STUB");
   }
 }

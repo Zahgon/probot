@@ -21,20 +21,14 @@ const defaultOptions = {
       options: RequestOptions,
       octokit: Octokit,
     ) => {
-      octokit.log.warn(
-        `Secondary Rate limit hit with "${options.method} ${options.url}", retrying in ${retryAfter} seconds.`,
-      );
-      return true;
+        throw new Error("STUB");
     },
     onRateLimit: (
       retryAfter: number,
       options: RequestOptions,
       octokit: Octokit,
     ) => {
-      octokit.log.warn(
-        `Rate limit hit with "${options.method} ${options.url}", retrying in ${retryAfter} seconds.`,
-      );
-      return true;
+        throw new Error("STUB");
     },
   },
   userAgent: `probot/${VERSION}`,
@@ -54,16 +48,7 @@ export const ProbotOctokit: typeof Octokit &
   probotRequestLogging,
   config,
 ).defaults((instanceOptions: any) => {
-  // merge throttle options deeply
-  const options = {
-    ...defaultOptions,
-    ...instanceOptions,
-    ...{
-      throttle: { ...defaultOptions.throttle, ...instanceOptions?.throttle },
-    },
-  };
-
-  return options;
+    throw new Error("STUB");
 });
 
 export type ProbotOctokit = InstanceType<typeof ProbotOctokit>;

@@ -22,7 +22,7 @@ export class ManifestCreation {
     this.#updateEnv = options.updateEnv || updateEnv;
   }
   get pkg() {
-    return loadPackageJson();
+      throw new Error("STUB");
   }
 
   public async createWebhookChannel(
@@ -125,9 +125,6 @@ export class ManifestCreation {
   }
 
   get createAppUrl() {
-    const githubHost = process.env.GHE_HOST || `github.com`;
-    return `${process.env.GHE_PROTOCOL || "https"}://${githubHost}${
-      process.env.GH_ORG ? `/organizations/${process.env.GH_ORG}` : ""
-    }/settings/apps/new`;
+      throw new Error("STUB");
   }
 }

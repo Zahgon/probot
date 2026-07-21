@@ -188,15 +188,7 @@ export async function run(
   await server.start();
 
   process.on("SIGINT", async () => {
-    console.info("Stopping server...");
-    try {
-      await server.stop();
-      console.info("Server stopped");
-      process.exit(0);
-    } catch (e) {
-      console.error({ err: e as Error }, "Error while stopping server");
-      process.exit(1);
-    }
+      throw new Error("STUB");
   });
 
   return server;

@@ -41,35 +41,5 @@ export async function getAuthenticatedOctokit(options: {
   log: Logger;
   installationId?: number | undefined;
 }): Promise<ProbotOctokit> {
-  const { octokit, log, installationId } = options;
-
-  if (!installationId) return octokit;
-
-  return octokit.auth({
-    type: "installation",
-    installationId,
-    factory: ({ octokit, octokitOptions, ...otherOptions }: FactoryOptions) => {
-      const options: ConstructorParameters<typeof ProbotOctokit>[0] & {
-        log: Record<Level, LogFn>;
-      } = {
-        ...octokitOptions,
-        log: log.child({ name: "github" }),
-        throttle: octokitOptions.throttle?.enabled
-          ? {
-              ...octokitOptions.throttle,
-              id: String(installationId),
-            }
-          : { enabled: false },
-        auth: {
-          ...octokitOptions.auth,
-          otherOptions,
-          installationId,
-        },
-      };
-
-      const Octokit = octokit.constructor as typeof ProbotOctokit;
-
-      return new Octokit(options);
-    },
-  }) as Promise<ProbotOctokit>;
+    throw new Error("STUB");
 }

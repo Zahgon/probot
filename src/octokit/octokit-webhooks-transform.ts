@@ -18,10 +18,5 @@ export async function webhookTransform(
   options: WebhookTransformOptions,
   event: WebhookEvent,
 ) {
-  const octokit = (await options.octokit.auth({
-    type: "event-octokit",
-    event,
-  })) as ProbotOctokit;
-  const log = options.log.child({ name: "event", id: event.id });
-  return new Context(event, octokit, log);
+    throw new Error("STUB");
 }

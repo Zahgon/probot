@@ -75,25 +75,7 @@ export class Context<Event extends WebhookEvents = WebhookEvents> {
   public log: Logger;
 
   constructor(event: WebhookEvent<Event>, octokit: ProbotOctokit, log: Logger) {
-    this.name = event.name;
-    this.id = event.id;
-    this.payload = event.payload;
-
-    this.octokit = octokit;
-    this.log = log;
-
-    // set `x-github-delivery` header on all requests sent in response to the current
-    // event. This allows GitHub Support to correlate the request with the event.
-    // This is not documented and not considered public API, the header may change.
-    // Once we document this as best practice on https://docs.github.com/en/rest/guides/best-practices-for-integrators
-    // we will make it official
-    if ((octokit as any)[kOctokitRequestHookAdded] !== true) {
-      /* istanbul ignore next */
-      octokit.hook.before("request", (options) => {
-        options.headers["x-github-delivery"] = event.id;
-      });
-      (octokit as any)[kOctokitRequestHookAdded] = true;
-    }
+      throw new Error("STUB");
   }
 
   /**
@@ -109,22 +91,7 @@ export class Context<Event extends WebhookEvents = WebhookEvents> {
    *
    */
   public repo<T>(object?: T): RepoResultType<Event> & T {
-    // @ts-expect-error `repository` is not always present in this.payload
-    const repo = this.payload.repository;
-
-    if (!repo) {
-      throw new Error(
-        "context.repo() is not supported for this webhook event.",
-      );
-    }
-
-    return Object.assign(
-      {
-        owner: repo.owner.login,
-        repo: repo.name,
-      },
-      object,
-    );
+      throw new Error("STUB");
   }
 
   /**
@@ -142,15 +109,7 @@ export class Context<Event extends WebhookEvents = WebhookEvents> {
   public issue<T>(
     object?: T,
   ): RepoResultType<Event> & { issue_number: RepoIssueNumberType<Event> } & T {
-    return Object.assign(
-      {
-        issue_number:
-          // @ts-expect-error - this.payload may not have `issue` or `pull_request` keys
-          (this.payload.issue || this.payload.pull_request || this.payload)
-            .number,
-      },
-      this.repo(object),
-    );
+      throw new Error("STUB");
   }
 
   /**
@@ -168,14 +127,7 @@ export class Context<Event extends WebhookEvents = WebhookEvents> {
   public pullRequest<T>(
     object?: T,
   ): RepoResultType<Event> & { pull_number: RepoIssueNumberType<Event> } & T {
-    const payload = this.payload;
-    return Object.assign(
-      {
-        // @ts-expect-error - this.payload may not have `issue` or `pull_request` keys
-        pull_number: (payload.issue || payload.pull_request || payload).number,
-      },
-      this.repo(object),
-    );
+      throw new Error("STUB");
   }
 
   /**
@@ -183,9 +135,7 @@ export class Context<Event extends WebhookEvents = WebhookEvents> {
    * @type {boolean}
    */
   get isBot(): boolean {
-    // `sender` key is not present in all events
-    // see https://github.com/octokit/webhooks/issues/510
-    return this.payload.sender?.type === "Bot";
+      throw new Error("STUB");
   }
 
   /**
@@ -242,25 +192,6 @@ export class Context<Event extends WebhookEvents = WebhookEvents> {
     defaultConfig?: T,
     deepMergeOptions?: MergeOptions,
   ): Promise<T | null> {
-    const params = this.repo({
-      path: path.posix.join(".github", fileName),
-      defaults(configs: Record<string, unknown>[]) {
-        const result = merge.all(
-          [defaultConfig || {}, ...configs],
-          deepMergeOptions,
-        );
-
-        return result as Record<string, unknown>;
-      },
-    });
-
-    const { config, files } = await this.octokit.config.get(params);
-
-    // if no default config is set, and no config files are found, return null
-    if (!defaultConfig && !files.find((file) => file.config !== null)) {
-      return null;
-    }
-
-    return config as T;
+      throw new Error("STUB");
   }
 }

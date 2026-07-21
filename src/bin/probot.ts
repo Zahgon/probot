@@ -54,8 +54,7 @@ if (values.version) {
   run(process.argv.slice(3), { env: process.env });
 } else if (positionals[0] === "receive") {
   receive(process.argv.slice(3)).catch((error) => {
-    console.error(error);
-    process.exit(1);
+      throw new Error("STUB");
   });
 } else if (values.help) {
   printHelp();
